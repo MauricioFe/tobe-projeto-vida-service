@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using ProjetoVidaTOBE_Server.Model;
 using ProjetoVidaTOBE_Server.Repositories.Contracts;
 using ProjetoVidaTOBE_Server.Repositories.Implemantation;
@@ -29,6 +30,15 @@ namespace ProjetoVidaTOBE_Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Api Projeto de Vida",
+                    Version = "v1",
+                    Description = "Api rest para o projeto de vida da ToBe. É uma plataforma voltado totalmente para a edução de acordo com perfil de cada pessoa."
+                });
+            });
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
         }
 
@@ -50,6 +60,8 @@ namespace ProjetoVidaTOBE_Server
             {
                 endpoints.MapControllers();
             });
+            app.UseSwagger();
+            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Projeto de vida Service"));
         }
     }
 }
