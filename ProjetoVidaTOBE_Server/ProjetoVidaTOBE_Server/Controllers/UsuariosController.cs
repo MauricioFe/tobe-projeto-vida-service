@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ProjetoVidaTOBE_Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioRepository _repo;
