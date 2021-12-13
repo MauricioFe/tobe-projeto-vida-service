@@ -1,12 +1,17 @@
-﻿using System;
+﻿using ProjetoVidaTOBE_Server.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjetoVidaTOBE_Server.Repositories
 {
-    interface IGenericRepository<T>
+    public interface IGenericRepository<T>
     {
-        public T Adiciona(T t);
+        public T Create(T objeto);
+        public T Update(T objeto);
+        public long Delete(long id);
+        public List<T> Get();
+        public T GetById(long id);
     }
 }
