@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoVidaTOBE_Server.Utils.Mapper
 {
-    public static class MapperDataRowObjectUtil
+    public static class MapperObjectUtil
     {
         public static T CreateItemFromRow<T>(this DataRow row, string nomeCampo)
         {
@@ -22,7 +22,22 @@ namespace ProjetoVidaTOBE_Server.Utils.Mapper
             }
             catch (Exception)
             {
-                return default(T);
+                throw new Exception("Erro ao converter datarow em um objeto");
+            }
+        }
+
+        public static T FromDataReader<T>(IDataReader reader, string nomeCampo) {
+            try
+            {
+                if (reader[nomeCampo] == null || reader[nomeCampo] == DBNull.Value)
+                {
+                    return default(T);
+                }
+                return (T)Convert.ChangeType(reader[nomeCampo], typeof(T), CultureInfo.CurrentCulture);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Erro ao converter reader em um objeto");
             }
         }
     }

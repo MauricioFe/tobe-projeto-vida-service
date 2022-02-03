@@ -1,3 +1,5 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,13 +8,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProjetoVidaTOBE_Server.Model;
+using ProjetoVidaTOBE_Server.Profiles;
 using ProjetoVidaTOBE_Server.Repositories.Contracts;
 using ProjetoVidaTOBE_Server.Repositories.Implemantation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ProjetoVidaTOBE_Server
@@ -39,7 +44,6 @@ namespace ProjetoVidaTOBE_Server
                     Description = "Api rest para o projeto de vida da ToBe. É uma plataforma voltado totalmente para a edução de acordo com perfil de cada pessoa."
                 });
             });
-            services.AddTransient<IUsuarioRepository, UsuarioRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

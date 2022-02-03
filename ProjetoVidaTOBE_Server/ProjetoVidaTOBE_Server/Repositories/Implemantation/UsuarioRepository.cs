@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
 using ProjetoVidaTOBE_Server.Data;
 using ProjetoVidaTOBE_Server.Model;
 using ProjetoVidaTOBE_Server.Repositories.Contracts;
@@ -19,58 +20,171 @@ namespace ProjetoVidaTOBE_Server.Repositories.Implemantation
             _context = new DataAccess(config.GetConnectionString(Constantes.connectionStringName));
 
         }
-        public Usuario Create(Usuario usuario)
+        public long Create(Usuario usuario)
         {
-            throw new NotImplementedException();
+            try
+            {
+                const string sql = @"INSERT INTO Usuarios (nome, email, senha, tipo_usuarios_id) 
+                                    VALUES (@nome, @email, @senha, @tipoUsuario)";
+                var parameters = new[]
+                {
+                    new MySqlParameter("@nome", usuario.Nome),
+                    new MySqlParameter("@email", usuario.Email),
+                    new MySqlParameter("@senha", usuario.Senha),
+                    new MySqlParameter("@tipoUsuario", usuario.TipoUsuarioId)
+                };
+                return _context.ExecuteCommandInsert(sql, parameters);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
+            }
         }
 
         public long Delete(long id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                const string sql = @"Delete From Usuarios where id = @id";
+                var parameters = new[]
+                {
+                    new MySqlParameter("@id", id)
+                };
+                return _context.ExecuteCommand(sql, parameters);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
+            }
         }
 
         public List<Usuario> Get()
         {
-            const string sql = @" SELECT U.ID, " +
-                                "U.TIPO_USUARIOS_ID, " +
-                                "U.NOME, U.EMAIL, " +
-                                "U.SENHA, " +
-                                "TU.DESCRICAO " +
-                                "FROM USUARIOS U " +
-                                "INNER JOIN TIPO_USUARIOS TU " +
-                                "ON U.TIPO_USUARIOS_ID = TU.ID";
-            var table = _context.GetTable(sql);
-            var usuarioList = (from DataRow row in table.Rows select Map(row)).ToList();
+            var usuarioList = new List<Usuario>();
+            try
+            {
+                const string sql = @" SELECT U.ID, " +
+                             "U.TIPO_USUARIOS_ID, " +
+                             "U.NOME, U.EMAIL, " +
+                             "TU.DESCRICAO " +
+                             "FROM USUARIOS U " +
+                             "INNER JOIN TIPO_USUARIOS TU " +
+                             "ON U.TIPO_USUARIOS_ID = TU.ID";
+                var reader = _context.GetReader(sql);
+                while (reader.Read())
+                {
+                    usuarioList.Add(Map(reader));
+                }
+            }
+            catch (Exception ex)
+            {
+                usuarioList = null;
+                Console.WriteLine(ex.Message);
+            }
             return usuarioList;
         }
 
-        public Usuario GetById(long id)
+        public Usuario Find(long id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                const string sql = @" SELECT U.ID, " +
+                              "U.TIPO_USUARIOS_ID, " +
+                              "U.NOME, U.EMAIL, " +
+                              "TU.DESCRICAO " +
+                              "FROM USUARIOS U " +
+                              "INNER JOIN TIPO_USUARIOS TU " +
+                              "ON U.TIPO_USUARIOS_ID = TU.ID where U.ID = @id";
+                var parameters = new[]
+                {
+                new MySqlParameter("@id", id)
+                };
+                var row = _context.GetRow(sql, parameters);
+                return Map(row);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public Usuario Login(Usuario usuario)
         {
-            throw new NotImplementedException();
+            try
+            {
+                const string sql = @" SELECT U.ID, " +
+                                "U.TIPO_USUARIOS_ID, " +
+                                "U.NOME, U.EMAIL, " +
+                                "TU.DESCRICAO " +
+                                "FROM USUARIOS U " +
+                                "INNER JOIN TIPO_USUARIOS TU " +
+                                "ON U.TIPO_USUARIOS_ID = TU.ID where U.EMAIL = @email and U.SENHA = @senha";
+                var parameters = new[]
+                {
+                    new MySqlParameter("@email", usuario.Email),
+                    new MySqlParameter("@senha", usuario.Senha)
+                };
+                var row = _context.GetRow(sql, parameters);
+                return Map(row);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+
         }
 
-        public Usuario Update(Usuario usuario)
+        public long Update(Usuario usuario, long id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                const string sql = @"Update Usuarios set nome = @nome, email = @email, tipo_usuarios_id = @tipoUsuario where id = @id";
+                var parameters = new[]
+                {
+                    new MySqlParameter("@nome", usuario.Nome),
+                    new MySqlParameter("@email", usuario.Email),
+                    new MySqlParameter("@tipoUsuario", usuario.TipoUsuarioId),
+                    new MySqlParameter("@id", id)
+                };
+                return _context.ExecuteCommand(sql, parameters);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
+            }
         }
 
         internal Usuario Map(DataRow row)
         {
             var tipoUsuario = new TipoUsuario();
-            tipoUsuario.Id = MapperDataRowObjectUtil.CreateItemFromRow<long>(row, "TIPO_USUARIOS_ID");
-            tipoUsuario.Descricao = MapperDataRowObjectUtil.CreateItemFromRow<string>(row, "DESCRICAO");
+            tipoUsuario.Id = MapperObjectUtil.CreateItemFromRow<long>(row, "TIPO_USUARIOS_ID");
+            tipoUsuario.Descricao = MapperObjectUtil.CreateItemFromRow<string>(row, "DESCRICAO");
             var usuario = new Usuario
             {
-                Id = MapperDataRowObjectUtil.CreateItemFromRow<long>(row, "ID"),
-                TipoUsuarioId = MapperDataRowObjectUtil.CreateItemFromRow<long>(row, "TIPO_USUARIOS_ID"),
-                Nome = MapperDataRowObjectUtil.CreateItemFromRow<string>(row, "NOME"),
-                Email = MapperDataRowObjectUtil.CreateItemFromRow<string>(row, "EMAIL"),
-                Senha = MapperDataRowObjectUtil.CreateItemFromRow<string>(row, "SENHA"),
+                Id = MapperObjectUtil.CreateItemFromRow<long>(row, "ID"),
+                TipoUsuarioId = MapperObjectUtil.CreateItemFromRow<long>(row, "TIPO_USUARIOS_ID"),
+                Nome = MapperObjectUtil.CreateItemFromRow<string>(row, "NOME"),
+                Email = MapperObjectUtil.CreateItemFromRow<string>(row, "EMAIL"),
+                TipoUsuario = tipoUsuario,
+            };
+            return usuario;
+        }
+        internal Usuario Map(IDataReader reader)
+        {
+            var tipoUsuario = new TipoUsuario();
+            tipoUsuario.Id = MapperObjectUtil.FromDataReader<long>(reader, "TIPO_USUARIOS_ID");
+            tipoUsuario.Descricao = MapperObjectUtil.FromDataReader<string>(reader, "DESCRICAO");
+            var usuario = new Usuario
+            {
+                Id = MapperObjectUtil.FromDataReader<long>(reader, "ID"),
+                TipoUsuarioId = MapperObjectUtil.FromDataReader<long>(reader, "TIPO_USUARIOS_ID"),
+                Nome = MapperObjectUtil.FromDataReader<string>(reader, "NOME"),
+                Email = MapperObjectUtil.FromDataReader<string>(reader, "EMAIL"),
                 TipoUsuario = tipoUsuario,
             };
             return usuario;
