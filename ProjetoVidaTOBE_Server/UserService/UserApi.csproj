@@ -7,21 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\**" />
-    <Compile Remove="Profiles\**" />
-    <Compile Remove="Services\**" />
-    <Content Remove="Controllers\**" />
-    <Content Remove="Profiles\**" />
-    <Content Remove="Services\**" />
-    <EmbeddedResource Remove="Controllers\**" />
-    <EmbeddedResource Remove="Profiles\**" />
-    <EmbeddedResource Remove="Services\**" />
-    <None Remove="Controllers\**" />
-    <None Remove="Profiles\**" />
-    <None Remove="Services\**" />
+    <Compile Remove="Data\Requests\**" />
+    <Content Remove="Data\Requests\**" />
+    <EmbeddedResource Remove="Data\Requests\**" />
+    <None Remove="Data\Requests\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Startup.cs~RF162196ee.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="FluentResults" Version="3.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.13">
       <PrivateAssets>all</PrivateAssets>
@@ -30,14 +29,10 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="5.0.13" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.15.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
+    <PackageReference Include="MimeKit" Version="3.1.1" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Dtos\" />
-    <Folder Include="Data\Requests\" />
   </ItemGroup>
 
 </Project>
