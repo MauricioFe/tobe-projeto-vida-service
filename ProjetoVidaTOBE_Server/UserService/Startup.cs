@@ -27,7 +27,14 @@ namespace UserApi
                 options.UseMySQL(Configuration.GetConnectionString("UserConnection"));
             });
 
-            services.AddIdentity<IdentityUser<long>, IdentityRole<long>>().AddEntityFrameworkStores<UserDbContext>();
+            services
+            .AddIdentity<IdentityUser<int>, IdentityRole<int>>(opt =>
+            {
+                opt.SignIn.RequireConfirmedEmail = true;
+                opt.Stores.MaxLengthForKeys = 100;
+            })
+            .AddEntityFrameworkStores<UserDbContext>()
+            .AddDefaultTokenProviders();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
