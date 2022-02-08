@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 using UserApi.Data;
+using UserApi.Services;
 
 namespace UserApi
 {
@@ -35,6 +37,8 @@ namespace UserApi
             })
             .AddEntityFrameworkStores<UserDbContext>()
             .AddDefaultTokenProviders();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<RegisterService, RegisterService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
