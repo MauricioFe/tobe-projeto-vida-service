@@ -6,11 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UserApi.Data.Dtos;
+using UserApi.Data.Request;
 using UserApi.Services;
 
 namespace UserApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("register-user")]
     [ApiController]
     public class RegisterUserController : ControllerBase
     {
@@ -26,6 +27,14 @@ namespace UserApi.Controllers
         {
             Result result = _registerService.RegisterUser(createDto);
             if (result.IsFailed) return StatusCode(500);
+            return Ok(result.Successes);
+        }
+
+        [HttpGet("active-account")]
+        public IActionResult ActiveAccount([FromQuery] ActiveAccountRequest request)
+        {
+            Result result = _registerService.ActiveAccount(request);
+            if (result.IsFailed) { return StatusCode(500); }
             return Ok(result.Successes);
         }
 
