@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using UserApi.Data;
+using UserApi.Models;
 using UserApi.Services;
 
 namespace UserApi
@@ -30,20 +31,23 @@ namespace UserApi
             });
 
             services
-            .AddIdentity<IdentityUser<int>, IdentityRole<int>>(opt =>
+            .AddIdentity<IdentityUserToBe, IdentityRole<int>>(opt =>
             {
                 opt.SignIn.RequireConfirmedEmail = true;
                 opt.Stores.MaxLengthForKeys = 100;
             })
             .AddEntityFrameworkStores<UserDbContext>()
             .AddDefaultTokenProviders();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<RegisterService, RegisterService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserService", Version = "v1" });
             });
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<RegisterService, RegisterService>();
+            services.AddScoped<LoginService, LoginService>();
+            services.AddScoped<EmailService, EmailService>();
+            services.AddScoped<TokenService, TokenService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
