@@ -15,6 +15,7 @@ namespace UserApi.Profiles
         {
             CreateMap<CreateUserDto, Users>().AfterMap((src, dest) => dest.Username = src.Email);
             CreateMap<Users, IdentityUser<int>>();
+            CreateMap<Users, IdentityUserToBe>();
         }
     }
 }
