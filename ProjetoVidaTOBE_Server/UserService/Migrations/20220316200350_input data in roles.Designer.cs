@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserApi.Data;
 
 namespace UserApi.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220316200350_input data in roles")]
+    partial class inputdatainroles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,15 +48,15 @@ namespace UserApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            ConcurrencyStamp = "02d804b7-910a-4e7d-871a-61df125075c7",
+                            Id = 99999,
+                            ConcurrencyStamp = "539d4a8c-db0c-486c-8387-fb2ba090a71a",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = 2,
-                            ConcurrencyStamp = "fce63aec-70ea-4cef-9b69-bd6ea9ad3c9c",
+                            Id = 99997,
+                            ConcurrencyStamp = "84411b03-328d-4826-a848-702da968f0f8",
                             Name = "aluno",
                             NormalizedName = "ALUNO"
                         });
@@ -144,8 +146,8 @@ namespace UserApi.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = 1,
-                            RoleId = 1
+                            UserId = 99999,
+                            RoleId = 99999
                         });
                 });
 
@@ -240,17 +242,17 @@ namespace UserApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 99999,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8ba0426c-ebf2-4dd7-9875-52b20dbea7f2",
+                            ConcurrencyStamp = "5f978c48-d588-49aa-b0c5-76d08a9935ff",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOhNHZwuGl2IRHPz9RbVtUtnulHOYX2kMdmcRoAx1fozUO8CNfQVeg63iDDV4fWr7A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKlXRJ5xIrgenafJn7Hbj2oXg2R28+5vMFtJ0W8+UBWdXTpNCiP4eQAzA4C1rnbgFg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "90e54305-7ccd-40cd-91d7-f5ee5be9b994",
+                            SecurityStamp = "017551d6-17bc-483c-b03b-82b468e80b5f",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
