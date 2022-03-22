@@ -23,6 +23,8 @@ namespace UserApi.Services
             _mapper = mapper;
             _emailService = emailService;
         }
+
+        //update role for user
         public Result RegisterUser(CreateUserDto createDto)
         {
             Users usuario = _mapper.Map<Users>(createDto);
