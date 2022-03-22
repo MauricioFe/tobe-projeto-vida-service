@@ -36,8 +36,10 @@ namespace UserApi
                 opt.SignIn.RequireConfirmedEmail = true;
                 opt.Stores.MaxLengthForKeys = 100;
             })
+            .AddRoleManager<RoleManager<IdentityRole<int>>>()
             .AddEntityFrameworkStores<UserDbContext>()
             .AddDefaultTokenProviders();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -48,6 +50,7 @@ namespace UserApi
             services.AddScoped<LoginService, LoginService>();
             services.AddScoped<EmailService, EmailService>();
             services.AddScoped<TokenService, TokenService>();
+            services.AddScoped<RoleService, RoleService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
