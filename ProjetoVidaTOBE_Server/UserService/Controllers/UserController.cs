@@ -1,9 +1,6 @@
 ﻿using FluentResults;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UserApi.Data.Dtos;
 using UserApi.Data.Request;
@@ -11,21 +8,20 @@ using UserApi.Services;
 
 namespace UserApi.Controllers
 {
-    [Route("register-user")]
     [ApiController]
-    public class RegisterUserController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private RegisterService _registerService;
+        private UserService _userService;
 
-        public RegisterUserController(RegisterService registerService)
+        public UserController(UserService userService)
         {
-            this._registerService = registerService;
+            this._userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("register-user")]
         public IActionResult RegisterUser(CreateUserDto createDto)
         {
-            Result result = _registerService.RegisterUser(createDto);
+            Result result = _userService.RegisterUser(createDto);
             if (result.IsFailed) return StatusCode(500);
             return Ok(result.Successes);
         }
@@ -33,10 +29,17 @@ namespace UserApi.Controllers
         [HttpGet("active-account")]
         public IActionResult ActiveAccount([FromQuery] ActiveAccountRequest request)
         {
-            Result result = _registerService.ActiveAccount(request);
+            Result result = _userService.ActiveAccount(request);
             if (result.IsFailed) { return StatusCode(500); }
             return Ok(result.Successes);
         }
 
+        [HttpPost("resend-email-token")]
+        public async Task<IActionResult> ReSendEmailToken([FromBody] ReSendEmailActiveAccountRequest request)
+        {
+            Result result = await _userService.ReSendEmailActiveAccount(request);
+            if (result.IsFailed) { return StatusCode(500); }
+            return Ok(result.Successes);
+        }
     }
 }

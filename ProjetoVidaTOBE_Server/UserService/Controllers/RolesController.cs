@@ -11,7 +11,7 @@ using UserApi.Services;
 
 namespace UserApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("roles")]
     [ApiController]
     public class RolesController : ControllerBase
     {
@@ -45,18 +45,18 @@ namespace UserApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult AtualizaCinema(int id, [FromBody] UpdateRoleDto roleDto)
+        public async Task<IActionResult> UpdateRole(int id, [FromBody] UpdateRoleDto roleDto)
         {
-            Result resultado = _roleService.UpdateRole(roleDto, id);
+            Result resultado = await _roleService.UpdateRoleAsync(roleDto, id);
             if (resultado.IsFailed) return NotFound();
             return NoContent();
 
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeletaCinema(int id)
+        public async Task<IActionResult> DeleteRole(int id)
         {
-            Result resultado = _roleService.DeleteRole(id);
+            Result resultado = await _roleService.DeleteRole(id);
             if (resultado.IsFailed) return NotFound();
             return NoContent();
         }

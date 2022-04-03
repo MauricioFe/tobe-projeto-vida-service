@@ -18,12 +18,12 @@ namespace UserApi.Services
             _configuration = configuration;
         }
 
-        public void SendEmail(string[] addresses, string subject,
+        public void SendEmailActivateAccount(string[] addresses, string subject,
            int userId, string code, string userName)
         {
             Message message = new Message(addresses,
-                subject, userName, userId, code);
-            var messageEmail = CreateBodyEmail(message);
+                subject, userName, userId, code, "active-account");
+            var messageEmail = CreateBodyEmailActivateAccount(message);
             Send(messageEmail);
         }
 
@@ -51,7 +51,29 @@ namespace UserApi.Services
             }
         }
 
-        private MimeMessage CreateBodyEmail(Message message)
+        private MimeMessage CreateBodyEmailActivateAccount(Message message)
+        {
+            var emailMessage = new MimeMessage();
+            emailMessage.From.Add(new MailboxAddress("Centro Tobe", _configuration.GetValue<string>("EmailSettings:From")));
+            emailMessage.To.AddRange(message.Addresses);
+            emailMessage.Subject = message.Subject;
+            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text)
+            {
+                Text = message.Content
+            };
+            return emailMessage;
+        }
+
+        internal void SendEmailResetPassword(string[] addresses, string subject,
+           int userId, string code, string email)
+        {
+            Message message = new Message(addresses,
+                subject, email, userId, code, "confirm-reset-password");
+            var messageEmail = CreateBodyEmailResetPassword(message);
+            Send(messageEmail);
+        }
+
+        private MimeMessage CreateBodyEmailResetPassword(Message message)
         {
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("Centro Tobe", _configuration.GetValue<string>("EmailSettings:From")));

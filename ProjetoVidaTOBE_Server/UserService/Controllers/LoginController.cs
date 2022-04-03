@@ -10,7 +10,7 @@ using UserApi.Services;
 
 namespace UserApi.Controllers
 {
-    [Route("login")]
+
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace UserApi.Controllers
         {
             _loginService = loginService;
         }
-        [HttpPost]
+        [HttpPost("login")]
         public IActionResult Login(LoginRequest request)
         {
             Result result = _loginService.SignInUser(request);
@@ -34,6 +34,14 @@ namespace UserApi.Controllers
             Result resultado = _loginService.RequestResetPassword(request);
             if (resultado.IsFailed) return Unauthorized(resultado.Errors);
             return Ok(resultado.Successes);
+        }
+
+        [HttpGet("confirm-reset-password")]
+        public IActionResult ConfirmResetPasswordByEmail([FromQuery] ConfirmResetPasswordRequest request)
+        {
+            var token = _loginService.ConfirmResetPasswordByEmail(request);
+            if (string.IsNullOrEmpty(token)) { return StatusCode(500); }
+            return Ok(new { token });
         }
 
         [HttpPost("reset-password")]

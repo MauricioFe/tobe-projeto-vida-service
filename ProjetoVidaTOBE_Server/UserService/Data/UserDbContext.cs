@@ -16,6 +16,7 @@ namespace UserApi.Data
             IdentityUserToBe admin = new IdentityUserToBe
             {
                 UserName = "admin",
+                FullName = "admin",
                 NormalizedUserName = "ADMIN",
                 Email = "admin@admin.com",
                 NormalizedEmail = "ADMIN@ADMIN.COM",

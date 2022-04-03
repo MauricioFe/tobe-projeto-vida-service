@@ -43,34 +43,34 @@ namespace UserApi.Services
             return null;
         }
 
-        public Result UpdateRole(UpdateRoleDto roleDto, int id)
+        public async Task<Result> UpdateRoleAsync(UpdateRoleDto roleDto, int id)
         {
-            IdentityRole<int> role = _mapper.Map<IdentityRole<int>>(GetRoleById(id));
+            IdentityRole<int> role = await _roleManager.FindByIdAsync(id.ToString());
             if (role == null)
             {
                 return Result.Fail("Role not exists");
             }
             role.Name = roleDto.Name;
-            Task<IdentityResult> result = _roleManager.UpdateAsync(role);
-            if (result.IsCompletedSuccessfully)
+            IdentityResult result = await _roleManager.UpdateAsync(role);
+            if (result.Succeeded)
             {
                 return Result.Ok();
             }
             return Result.Fail("Erro in update");
         }
-        public Result DeleteRole(int id)
+        public async Task<Result> DeleteRole(int id)
         {
-            IdentityRole<int> role = _mapper.Map<IdentityRole<int>>(GetRoleById(id));
+            IdentityRole<int> role = await _roleManager.FindByIdAsync(id.ToString());
             if (role == null)
             {
                 return Result.Fail("Role not exists");
             }
-            Task<IdentityResult> result = _roleManager.DeleteAsync(role);
-            if (result.IsFaulted)
+            IdentityResult result = await _roleManager.DeleteAsync(role);
+            if (result.Succeeded)
             {
-                return Result.Fail("Erro in delete");
+                return Result.Ok();
             }
-            return Result.Ok();
+            return Result.Fail("Erro in delete");
         }
 
 

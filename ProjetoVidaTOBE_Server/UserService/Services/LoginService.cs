@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using UserApi.Data.Request;
 using UserApi.Models;
 
@@ -13,11 +14,15 @@ namespace UserApi.Services
     {
         private SignInManager<IdentityUserToBe> _signInManager;
         private TokenService _tokenService;
+        private EmailService _emailService;
+        private UserManager<IdentityUserToBe> _userManager;
 
-        public LoginService(TokenService tokenService, SignInManager<IdentityUserToBe> signInManager)
+        public LoginService(TokenService tokenService, SignInManager<IdentityUserToBe> signInManager, EmailService emailService, UserManager<IdentityUserToBe> userManager)
         {
             _tokenService = tokenService;
             _signInManager = signInManager;
+            _emailService = emailService;
+            _userManager = userManager;
         }
 
         public Result SignInUser(LoginRequest request)
@@ -39,6 +44,17 @@ namespace UserApi.Services
 
         }
 
+        internal string ConfirmResetPasswordByEmail(ConfirmResetPasswordRequest request)
+        {
+            var identityUser = _userManager.Users
+                .FirstOrDefault(u => u.Id == request.UserId);
+            if (identityUser != null)
+            {
+                return request.ActivationCode;
+            }
+            return null;
+        }
+
         public Result ResetPassword(ResetPasswordRequest request)
         {
             IdentityUserToBe identityUser = GetUserByEmail(request.Email);
@@ -56,8 +72,16 @@ namespace UserApi.Services
             IdentityUserToBe identityUser = GetUserByEmail(request.Email);
             if (identityUser != null)
             {
-                string resetPasswordCode = _signInManager.UserManager.GeneratePasswordResetTokenAsync(identityUser).Result;
-                return Result.Ok().WithSuccess(resetPasswordCode);
+                try
+                {
+                    GenerateEmailResetSenha(identityUser);
+                    return Result.Ok();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Generate Email to reset password fail:\n{ex.Message}");
+                    return Result.Fail($"Generate Email to reset password fail:\n{ex.Message}");
+                }
             }
             return Result.Fail("User not found");
         }
@@ -65,6 +89,21 @@ namespace UserApi.Services
         private IdentityUserToBe GetUserByEmail(string email)
         {
             return _signInManager.UserManager.Users.FirstOrDefault(u => u.NormalizedEmail == email.ToUpper());
+        }
+
+        private Result GenerateEmailResetSenha(IdentityUserToBe user)
+        {
+            try
+            {
+                string resetPasswordCode = _signInManager.UserManager.GeneratePasswordResetTokenAsync(user).Result;
+                var encodedCode = HttpUtility.UrlEncode(resetPasswordCode);
+                _emailService.SendEmailResetPassword(new[] { user.Email }, "Recuperação de senha ToBe", user.Id, encodedCode, user.Email);
+                return Result.Ok();
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

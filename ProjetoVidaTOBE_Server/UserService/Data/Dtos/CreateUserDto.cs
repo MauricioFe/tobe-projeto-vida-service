@@ -9,6 +9,8 @@ namespace UserApi.Data.Dtos
     public class CreateUserDto
     {
         [Required]
+        public string FullName { get; set; }
+        [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         [DataType(DataType.Password)]
@@ -18,5 +20,6 @@ namespace UserApi.Data.Dtos
         [Required]
         [Compare("Password")]
         public string RePassword { get; set; }
+        public string Role { get; set; }
     }
 }

@@ -13,13 +13,13 @@ namespace UserApi.Models
         public string Subject { get; set; }
         public string Content { get; set; }
 
-        public Message(IEnumerable<string> addresses, string subject, string userName,
-            int userId, string code)
+        public Message(IEnumerable<string> addresses, string subject, string email,
+            int userId, string code, string route)
         {
             Addresses = new List<MailboxAddress>();
-            Addresses.AddRange(addresses.Select(d => new MailboxAddress(userName, d)));
+            Addresses.AddRange(addresses.Select(d => new MailboxAddress(email, d)));
             Subject = subject;
-            Content = $"http://localhost:5000/api/registerUser/activeAccount?UserId={userId}&activationCode={code}";
+            Content = $"http://localhost:5000/{route}?UserId={userId}&activationCode={code}";
         }
     }
 }
