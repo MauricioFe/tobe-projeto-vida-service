@@ -9,8 +9,8 @@ using UserApi.Data;
 namespace UserApi.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20220316204434_update ids")]
-    partial class updateids
+    [Migration("20220322193317_createDataBase")]
+    partial class createDataBase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,14 +49,14 @@ namespace UserApi.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "02d804b7-910a-4e7d-871a-61df125075c7",
+                            ConcurrencyStamp = "a762fff0-a0c9-4b43-9d72-13fb1ff12184",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "fce63aec-70ea-4cef-9b69-bd6ea9ad3c9c",
+                            ConcurrencyStamp = "c89a5eac-6b6d-4ce8-b457-1072bda6c867",
                             Name = "aluno",
                             NormalizedName = "ALUNO"
                         });
@@ -244,15 +244,16 @@ namespace UserApi.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8ba0426c-ebf2-4dd7-9875-52b20dbea7f2",
+                            ConcurrencyStamp = "6257c9d6-6179-4fcb-9096-25b02d07230e",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
+                            FullName = "admin",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOhNHZwuGl2IRHPz9RbVtUtnulHOYX2kMdmcRoAx1fozUO8CNfQVeg63iDDV4fWr7A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJr3/n7EwDV/TQSSqwzK+PxQCDEwPlkleqzfRr8tyknKbNCIK03qefeGyXtrYx4ixA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "90e54305-7ccd-40cd-91d7-f5ee5be9b994",
+                            SecurityStamp = "2a143ea9-4362-4a23-b0dc-c82bc0ae7909",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
