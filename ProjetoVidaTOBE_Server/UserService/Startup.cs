@@ -46,7 +46,7 @@ namespace UserApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserService", Version = "v1" });
             });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<RegisterService, RegisterService>();
+            services.AddScoped<UserService, UserService>();
             services.AddScoped<LoginService, LoginService>();
             services.AddScoped<EmailService, EmailService>();
             services.AddScoped<TokenService, TokenService>();
