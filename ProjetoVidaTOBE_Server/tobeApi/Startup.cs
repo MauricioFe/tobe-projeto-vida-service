@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tobeApi.Data;
+using tobeApi.Services;
 
 namespace tobeApi
 {
@@ -34,6 +35,7 @@ namespace tobeApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "tobeApi", Version = "v1" });
             });
             services.AddTransient<IDataAccess, DataAccess>(_ => new DataAccess(Configuration.GetConnectionString("tobeConn")));
+            services.AddScoped<ContactsService, ContactsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
