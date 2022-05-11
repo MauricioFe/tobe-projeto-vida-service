@@ -97,7 +97,7 @@ namespace UserApi.Services
             {
                 string resetPasswordCode = _signInManager.UserManager.GeneratePasswordResetTokenAsync(user).Result;
                 var encodedCode = HttpUtility.UrlEncode(resetPasswordCode);
-                _emailService.SendEmailResetPassword(new[] { user.Email }, "Recuperação de senha ToBe", user.Id, encodedCode, user.Email);
+                _emailService.SendEmailResetPassword(new[] { user.Email }, "Recuperação de senha ToBe", user.Id, encodedCode, user.Email, user.FullName);
                 return Result.Ok();
             }
             catch
