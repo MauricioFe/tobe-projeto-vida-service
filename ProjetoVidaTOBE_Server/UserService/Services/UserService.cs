@@ -56,7 +56,7 @@ namespace UserApi.Services
                 var encodedCode = HttpUtility.UrlEncode(code);
 
                 _emailService.SendEmailActivateAccount(new[] { userIdentity.Email },
-                    "Link de Ativação", userIdentity.Id, encodedCode, userIdentity.Email);
+                    "Link de Ativação", userIdentity.Id, encodedCode, userIdentity.Email, userIdentity.FullName);
                 return Result.Ok();
             }
             catch (Exception)

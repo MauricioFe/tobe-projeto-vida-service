@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApi", "UserService\User
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tobeApi", "tobeApi\tobeApi.csproj", "{4A9D71EF-41A1-4ECC-A64E-A819FFE739F5}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F2094AE9-21C2-4CFD-920A-869B47BEA977}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{4A9D71EF-41A1-4ECC-A64E-A819FFE739F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A9D71EF-41A1-4ECC-A64E-A819FFE739F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A9D71EF-41A1-4ECC-A64E-A819FFE739F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F2094AE9-21C2-4CFD-920A-869B47BEA977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2094AE9-21C2-4CFD-920A-869B47BEA977}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2094AE9-21C2-4CFD-920A-869B47BEA977}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2094AE9-21C2-4CFD-920A-869B47BEA977}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
