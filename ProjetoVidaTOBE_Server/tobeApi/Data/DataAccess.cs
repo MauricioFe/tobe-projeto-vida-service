@@ -78,7 +78,7 @@ namespace tobeApi.Data
             }
             catch (Exception ex)
             {
-                var message = new List<string> { 
+                var message = new List<string> {
                     $"sql: {sql}",
                     $"message error: {ex.Message}" };
                 Console.WriteLine(message);
@@ -129,7 +129,7 @@ namespace tobeApi.Data
             return table.Rows[0];
         }
 
-        public void ExecuteCommand(string sql, params MySqlParameter[] parameters)
+        public long ExecuteCommand(string sql, bool isInsert = false, params MySqlParameter[] parameters)
         {
             try
             {
@@ -139,7 +139,12 @@ namespace tobeApi.Data
                 {
                     command.Parameters.AddRange(parameters);
                     command.CommandType = CommandType.Text;
-                    command.ExecuteNonQuery();
+                    var affectRows = command.ExecuteNonQuery();
+                    if (isInsert)
+                    {
+                        return command.LastInsertedId;
+                    }
+                    return affectRows;
                 }
             }
             catch (Exception ex)
@@ -148,6 +153,7 @@ namespace tobeApi.Data
                 message.AddRange(parameters.Select(param => $"{param.ParameterName} = {param.Value}"));
                 message.Add($"message error: {ex.Message}");
                 Console.WriteLine(message);
+                return 0;
             }
             finally
             {

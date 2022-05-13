@@ -13,6 +13,6 @@ namespace tobeApi.Data
         DataTable GetTable(string sql, params MySqlParameter[] parameters);
         DataRow GetRow(string sql, params MySqlParameter[] parameters);
         long GetCount(string sql, params MySqlParameter[] parameters);
-        void ExecuteCommand(string sql, params MySqlParameter[] parameters);
+        long ExecuteCommand(string sql, bool isInsert =false ,params MySqlParameter[] parameters);
     }
 }

@@ -36,7 +36,7 @@ namespace UserApi.Services
                     .Users
                     .FirstOrDefault(user => user.NormalizedEmail == request.Email.ToUpper());
                 Token token = _tokenService
-                    .CreateToken(idetityUser);
+                    .CreateToken(idetityUser, _signInManager.UserManager.GetRolesAsync(idetityUser).Result.FirstOrDefault());
 
                 return Result.Ok().WithSuccess(token.Value);
             }
