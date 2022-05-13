@@ -2,18 +2,18 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using tobeApi.Data.Dtos.Student;
+using tobeApi.Data.Dtos.Students;
 using tobeApi.Services;
 
 namespace tobeApi.Controllers
 {
     [Route("studant")]
     [ApiController]
-    public class StudantController : ControllerBase
+    public class StudentController : ControllerBase
     {
         private readonly StudentService _service;
 
-        public StudantController(StudentService service)
+        public StudentController(StudentService service)
         {
             this._service = service;
         }

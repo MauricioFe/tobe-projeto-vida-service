@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace tobeApi.Data.Dtos.Student
+namespace tobeApi.Data.Dtos.Students
 {
     public class StudentUserDto
     {

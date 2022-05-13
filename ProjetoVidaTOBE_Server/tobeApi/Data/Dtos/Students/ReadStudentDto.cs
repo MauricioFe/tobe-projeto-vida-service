@@ -1,4 +1,4 @@
-﻿namespace tobeApi.Data.Dtos.Student
+﻿namespace tobeApi.Data.Dtos.Students
 {
     public class ReadStudentDto
     {

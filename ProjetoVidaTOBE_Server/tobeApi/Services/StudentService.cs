@@ -2,7 +2,7 @@
 using FluentResults;
 using System;
 using System.Collections.Generic;
-using tobeApi.Data.Dtos.Student;
+using tobeApi.Data.Dtos.Students;
 using tobeApi.Data.Repositories.Students;
 using tobeApi.Models;
 

@@ -1,20 +1,17 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using tobeApi.Data;
+using tobeApi.Data.Repositories.CalendarEvents;
+using tobeApi.Data.Repositories.Institutions;
+using tobeApi.Data.Repositories.Schollings;
 using tobeApi.Data.Repositories.Students;
 using tobeApi.Services;
 
@@ -57,10 +54,26 @@ namespace tobeApi
             });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddTransient<IDataAccess, DataAccess>(_ => new DataAccess(Configuration.GetConnectionString("tobeConn")));
+            AddRepositoriesTransient(services);
+            AddServicesScopes(services);
+        }
+
+        private static void AddRepositoriesTransient(IServiceCollection services)
+        {
             services.AddTransient<IStudentRepository, StudentRepository>();
+            services.AddTransient<ISchollingRepository, SchollingRepository>();
+            services.AddTransient<IInstitutionRepository, InstitutionRepository>();
+            services.AddTransient<ICalendarEventRepository, CalendarEventRepository>();
+        }
+
+        private static void AddServicesScopes(IServiceCollection services)
+        {
             services.AddScoped<ContactsService, ContactsService>();
             services.AddScoped<StudentLoginService, StudentLoginService>();
             services.AddScoped<StudentService, StudentService>();
+            services.AddScoped<SchollingService, SchollingService>();
+            services.AddScoped<InstitutionService, InstitutionService>();
+            services.AddScoped<CalendarEventService, CalendarEventService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

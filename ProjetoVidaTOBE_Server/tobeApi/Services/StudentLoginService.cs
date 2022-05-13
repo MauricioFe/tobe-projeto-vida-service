@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using tobeApi.Data.Dtos.Student;
+using tobeApi.Data.Dtos.Students;
 using tobeApi.Models;
 
 namespace tobeApi.Services

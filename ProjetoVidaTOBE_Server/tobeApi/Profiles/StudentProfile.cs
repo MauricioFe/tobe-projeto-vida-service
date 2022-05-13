@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using tobeApi.Data.Dtos.Student;
+using tobeApi.Data.Dtos.Students;
 using tobeApi.Models;
 
 namespace tobeApi.Profiles
