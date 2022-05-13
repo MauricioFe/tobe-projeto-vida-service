@@ -9,12 +9,13 @@ namespace UserApi.Services
 {
     public class TokenService
     {
-        internal Token CreateToken(IdentityUserToBe user)
+        internal Token CreateToken(IdentityUserToBe user, string role)
         {
             Claim[] userClaims = new Claim[]
             {
                 new Claim("email", user.Email),
-                new Claim("id", user.Id.ToString())
+                new Claim("id", user.Id.ToString()),
+                new Claim(ClaimTypes.Role, role)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("D4AFC1953ACF1A613D03EE4093483CB01DF130F93060B869CB937FF143B9BD48"));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

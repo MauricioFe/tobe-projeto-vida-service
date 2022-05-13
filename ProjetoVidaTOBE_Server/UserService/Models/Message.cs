@@ -19,7 +19,7 @@ namespace UserApi.Models
             Addresses = new List<MailboxAddress>();
             Addresses.AddRange(addresses.Select(d => new MailboxAddress(email, d)));
             Subject = subject;
-            Content = $"http://localhost:5000/{route}?UserId={userId}&activationCode={code}";
+            Content = $"http://localhost:5050/{route}?UserId={userId}&activationCode={code}";
         }
     }
 }
