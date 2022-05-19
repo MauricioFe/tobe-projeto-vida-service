@@ -57,6 +57,10 @@ namespace tobeApi.Controllers
         [Authorize(Roles = "aluno")]
         public IActionResult Update([FromBody] UpdateCalendarEventDto calendarEventDto, long id)
         {
+            if (_service.Get(id) == null)
+            {
+                return NotFound();
+            }
             ReadCalendarEventDto readDto = _service.Update(calendarEventDto, id);
             if (readDto == null) return BadRequest();
             return Ok(readDto);
@@ -66,6 +70,10 @@ namespace tobeApi.Controllers
         [Authorize(Roles = "aluno")]
         public IActionResult Delete(long id)
         {
+            if (_service.Get(id) == null)
+            {
+                return NotFound();
+            }
             Result result = _service.Delete(id);
             if (result.IsFailed) return BadRequest();
             return Ok();

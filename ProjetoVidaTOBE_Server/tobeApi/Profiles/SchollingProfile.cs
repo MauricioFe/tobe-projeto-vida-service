@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using tobeApi.Data.Dtos.Scholling;
+using tobeApi.Data.Dtos.Schollings;
 using tobeApi.Models;
 
 namespace tobeApi.Profiles

@@ -7,7 +7,7 @@ using tobeApi.Services;
 
 namespace tobeApi.Controllers
 {
-    [Route("studant")]
+    [Route("student")]
     [ApiController]
     public class StudentController : ControllerBase
     {
@@ -48,6 +48,10 @@ namespace tobeApi.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Update([FromBody] StudentDto studentDto, long id)
         {
+            if (_service.Get(id) == null)
+            {
+                return NotFound();
+            }
             ReadStudentDto readDto = _service.Update(studentDto, id);
             if (readDto == null) return BadRequest();
             return Ok(readDto);
@@ -57,6 +61,10 @@ namespace tobeApi.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Delete(long id)
         {
+            if (_service.Get(id) == null)
+            {
+                return NotFound();
+            }
             Result result = _service.Delete(id);
             if (result.IsFailed) return BadRequest();
             return Ok();
@@ -66,6 +74,10 @@ namespace tobeApi.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult ToggleActive(long id)
         {
+            if (_service.Get(id) == null)
+            {
+                return NotFound();
+            }
             Result result = _service.ToggleActive(id);
             if (result.IsFailed) return BadRequest();
             return Ok();

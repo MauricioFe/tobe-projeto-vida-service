@@ -20,12 +20,12 @@ namespace tobeApi.Data.Repositories.Schollings
 
         public Scholling Create(Scholling model)
         {
-            const string sql = @"INSERT INTO `tobe_db`.`escolaridades`
-		                                (descricao) 
-                                 VALUES (@descricao)";
+            const string sql = @"INSERT INTO `tobe_db`.`schollings`
+		                                (description) 
+                                 VALUES (@description)";
             var paramList = new MySqlParameter[]
             {
-                new MySqlParameter("descricao", model.Description),
+                new MySqlParameter("description", model.Description),
             };
             long lastInsertedId = _contextDb.ExecuteCommand(sql, true, paramList);
             if (lastInsertedId == 0)
@@ -37,7 +37,7 @@ namespace tobeApi.Data.Repositories.Schollings
 
         public Result Delete(long id)
         {
-            const string sql = @"DELETE FROM `tobe_db`.`escolaridades`
+            const string sql = @"DELETE FROM `tobe_db`.`schollings`
                                  WHERE (id = @id);";
             var paramList = new MySqlParameter[]
             {
@@ -55,14 +55,18 @@ namespace tobeApi.Data.Repositories.Schollings
         public Scholling Get(long id)
         {
             const string sql = @"SELECT id,
-		                                descricao
-                                        FROM tobe_db.escolaridades
+		                                description
+                                        FROM tobe_db.schollings
                                  WHERE id = @id;";
             var paramList = new MySqlParameter[]
             {
                 new MySqlParameter("id", id)
             };
             var row = _contextDb.GetRow(sql, paramList);
+            if (row == null)
+            {
+                return null;
+            }
             var schollings = Map(row);
             return schollings;
         }
@@ -71,8 +75,8 @@ namespace tobeApi.Data.Repositories.Schollings
         {
             const string sql = @"SELECT 
 		                                 id,
-		                                descricao
-                                        FROM tobe_db.escolaridades;";
+		                                description
+                                        FROM tobe_db.schollings;";
             var table = _contextDb.GetTable(sql);
             var schollingsList = (from DataRow row in table.Rows select Map(row)).ToList();
             return schollingsList;
@@ -80,13 +84,13 @@ namespace tobeApi.Data.Repositories.Schollings
 
         public Scholling Update(Scholling model, long id)
         {
-            const string sql = @"UPDATE `tobe_db`.`escolaridades`
+            const string sql = @"UPDATE `tobe_db`.`schollings`
                                         SET
-		                                descricao = @descricao, 
-                                 WHERE (id = @id);";
+		                                description = @description
+                                 WHERE id = @id;";
             var paramList = new MySqlParameter[]
             {
-                new MySqlParameter("descricao", model.Description),
+                new MySqlParameter("description", model.Description),
                 new MySqlParameter("id", id),
             };
             long affectRows = _contextDb.ExecuteCommand(sql, false, paramList);
@@ -101,7 +105,7 @@ namespace tobeApi.Data.Repositories.Schollings
             var schollings = new Scholling
             {
                 Id = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "id"),
-                Description = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "descricao"),
+                Description = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "description"),
             };
             return schollings;
         }

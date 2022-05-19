@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace tobeApi.Data.Dtos.Scholling
+namespace tobeApi.Data.Dtos.Schollings
 {
     public class SchollingDto
     {
         [Required]
         [StringLength(45)]
-        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }

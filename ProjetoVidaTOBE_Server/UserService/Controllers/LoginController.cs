@@ -25,7 +25,7 @@ namespace UserApi.Controllers
         {
             Result result = _loginService.SignInUser(request);
             if (result.IsFailed) { return Unauthorized(result.Errors); }
-            return Ok(result.Successes);
+            return Ok(new { token = result.Successes[0].Message });
         }
 
         [HttpPost("request-reset-password")]

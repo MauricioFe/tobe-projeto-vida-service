@@ -20,25 +20,25 @@ namespace tobeApi.Data.Repositories.CalendarEvents
 
         public CalendarEvent Create(CalendarEvent model)
         {
-            const string sql = @"INSERT INTO `tobe_db`.`eventos_calendario
+            const string sql = @"INSERT INTO `tobe_db`.`calendar_events`
 		                                (
-                                            titulo,
-                                            data,
-                                            hora,
-                                            alunos_id
+                                            title,
+                                            date,
+                                            time,
+                                            student_id
                                         ) 
                                  VALUES (
-                                            @titulo,
-                                            @data,
-                                            @hora,
-                                            @alunos_id                                        
+                                            @title,
+                                            @date,
+                                            @time,
+                                            @student_id                                        
                                         )";
             var paramList = new MySqlParameter[]
             {
-                new MySqlParameter("titulo", model.Title),
-                new MySqlParameter("data", model.Date),
-                new MySqlParameter("hora", model.Time),
-                new MySqlParameter("alunos_id", model.StudentId),
+                new MySqlParameter("title", model.Title),
+                new MySqlParameter("date", model.Date),
+                new MySqlParameter("time", model.Time),
+                new MySqlParameter("student_id", model.StudentId),
             };
             long lastInsertedId = _contextDb.ExecuteCommand(sql, true, paramList);
             if (lastInsertedId == 0)
@@ -50,7 +50,7 @@ namespace tobeApi.Data.Repositories.CalendarEvents
 
         public Result Delete(long id)
         {
-            const string sql = @"DELETE FROM `tobe_db`.`eventos_calendario`
+            const string sql = @"DELETE FROM `tobe_db`.`calendar_events`
                                  WHERE (id = @id);";
             var paramList = new MySqlParameter[]
             {
@@ -68,17 +68,21 @@ namespace tobeApi.Data.Repositories.CalendarEvents
         public CalendarEvent Get(long id)
         {
             const string sql = @"SELECT id,
-		                                titulo,
-                                        data,
-                                        hora,
-                                        alunos_id
-                                        FROM tobe_db.eventos_calendario 
+		                                title,
+                                        date,
+                                        time,
+                                        student_id
+                                        FROM tobe_db.calendar_events 
                                  WHERE id = @id;";
             var paramList = new MySqlParameter[]
             {
                 new MySqlParameter("id", id)
             };
             var row = _contextDb.GetRow(sql, paramList);
+            if (row == null)
+            {
+                return null;
+            }
             var calendarEvents = Map(row);
             return calendarEvents;
         }
@@ -87,11 +91,11 @@ namespace tobeApi.Data.Repositories.CalendarEvents
         {
             const string sql = @"SELECT 
 		                                id,
-		                                titulo,
-                                        data,
-                                        hora,
-                                        alunos_id
-                                        FROM tobe_db.eventos_calendario;";
+		                                title,
+                                        date,
+                                        time,
+                                        student_id
+                                        FROM tobe_db.calendar_events;";
             var table = _contextDb.GetTable(sql);
             var calendarEventsList = (from DataRow row in table.Rows select Map(row)).ToList();
             return calendarEventsList;
@@ -100,28 +104,28 @@ namespace tobeApi.Data.Repositories.CalendarEvents
         public List<CalendarEvent> GetCalendarEventsByStudent(long studentId)
         {
             const string sql = @"SELECT 
-		                                id,
-		                                titulo,
-                                        data,
-                                        hora,
-                                        alunos_id,
-                                        nome,
-                                        email,
-                                        cpf,
-                                        estado,
-                                        nivel,
-                                        data_nascimento,
-                                        cidade,
-                                        instituicoes_id,
-                                        escolaridades_id,
-                                        ativo
-                                        FROM tobe_db.eventos_calendario ec
-                                        INNER JOIN tobe_db.alunos a ON
-                                        ec.alunos_id = a.id
-                                WHERE alunos_id = @alunos_id;";
+		                                ec.id,
+		                                ec.title,
+                                        ec.date,
+                                        ec.time,
+                                        ec.student_id,
+                                        a.name, 
+                                        a.cpf, 
+                                        a.email, 
+                                        a.state, 
+                                        a.level, 
+                                        a.date_of_birth, 
+                                        a.city, 
+                                        a.institution_id, 
+                                        a.scholling_id, 
+                                        a.active
+                                        FROM tobe_db.calendar_events ec
+                                        INNER JOIN tobe_db.student a ON
+                                        ec.student_id = a.id
+                                WHERE student_id = @student_id;";
             var paramList = new MySqlParameter[]
             {
-                new MySqlParameter("alunos_id", studentId)
+                new MySqlParameter("student_id", studentId)
             };
             var table = _contextDb.GetTable(sql, paramList);
             var calendarEventsList = (from DataRow row in table.Rows select MapWithStudent(row)).ToList();
@@ -130,20 +134,20 @@ namespace tobeApi.Data.Repositories.CalendarEvents
 
         public CalendarEvent Update(CalendarEvent model, long id)
         {
-            const string sql = @"UPDATE `tobe_db`.`eventos_calendario`
+            const string sql = @"UPDATE `tobe_db`.`calendar_events`
                                         SET
-		                                titulo = @titulo, 
-                                        data = @data, 
-                                        hora = @hora, 
-                                        alunos_id = @alunos_id 
-                                 WHERE (id = @id);";
+		                                title = @title, 
+                                        date = @date, 
+                                        time = @time, 
+                                        student_id = @student_id 
+                                 WHERE id = @id;";
 
             var paramList = new MySqlParameter[]
             {
-                new MySqlParameter("titulo", model.Title),
-                new MySqlParameter("data", model.Date),
-                new MySqlParameter("hora", model.Time),
-                new MySqlParameter("alunos_id", model.StudentId),
+                new MySqlParameter("title", model.Title),
+                new MySqlParameter("date", model.Date),
+                new MySqlParameter("time", model.Time),
+                new MySqlParameter("student_id", model.StudentId),
                 new MySqlParameter("id", id)
             };
             long affectRows = _contextDb.ExecuteCommand(sql, false, paramList);
@@ -160,10 +164,10 @@ namespace tobeApi.Data.Repositories.CalendarEvents
                 var calendarEvents = new CalendarEvent
                 {
                     Id = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "id"),
-                    Title = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "titulo"),
-                    Date = MapperDataRowToObjectUtil.CreateItemFromRow<DateTime>(row, "data"),
-                    Time = MapperDataRowToObjectUtil.CreateItemFromRow<TimeSpan>(row, "hora"),
-                    StudentId = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "alunos_id")
+                    Title = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "title"),
+                    Date = MapperDataRowToObjectUtil.CreateItemFromRow<DateTime>(row, "date"),
+                    Time = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "time"),
+                    StudentId = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "student_id")
                 };
                 return calendarEvents;
             }
@@ -178,23 +182,27 @@ namespace tobeApi.Data.Repositories.CalendarEvents
         {
             try
             {
-                var student = new Student();
-                student.Id = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "id");
-                student.Name = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "nome");
-                student.Email = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "email");
-                student.State = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "estado");
-                student.Level = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "nivel");
-                student.DateOfBirth = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "data_nascimento");
-                student.InstitutionsID = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "instituicoes_id");
-                student.SchoolingID = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "escolaridades_id");
-                student.Active = MapperDataRowToObjectUtil.CreateItemFromRow<int>(row, "ativo");
+                var student = new Student
+                {
+                    Id = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "student_id"),
+                    Name = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "name"),
+                    Cpf = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "cpf"),
+                    Email = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "email"),
+                    State = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "state"),
+                    Level = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "level"),
+                    DateOfBirth = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "date_of_birth"),
+                    City = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "city"),
+                    InstitutionsID = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "institution_id"),
+                    SchoolingID = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "scholling_id"),
+                    Active = MapperDataRowToObjectUtil.CreateItemFromRow<int>(row, "active"),
+                };
                 var calendarEvents = new CalendarEvent
                 {
                     Id = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "id"),
-                    Title = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "titulo"),
-                    Date = MapperDataRowToObjectUtil.CreateItemFromRow<DateTime>(row, "data"),
-                    Time = MapperDataRowToObjectUtil.CreateItemFromRow<TimeSpan>(row, "hora"),
-                    StudentId = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "alunos_id"),
+                    Title = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "title"),
+                    Date = MapperDataRowToObjectUtil.CreateItemFromRow<DateTime>(row, "date"),
+                    Time = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "time"),
+                    StudentId = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "student_id"),
                     Student = student
                 };
                 return calendarEvents;

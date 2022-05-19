@@ -14,7 +14,10 @@ namespace tobeApi.Utils
 
                 if ((row[nomeCampo] == null) || (row[nomeCampo] == DBNull.Value))
                     return default(T);
-
+                if (row[nomeCampo].GetType() == typeof(TimeSpan))
+                {
+                    return (T)Convert.ChangeType(row[nomeCampo].ToString(), typeof(string), CultureInfo.CurrentCulture);
+                }
                 return (T)Convert.ChangeType(row[nomeCampo], typeof(T), CultureInfo.CurrentCulture);
             }
             catch (Exception)

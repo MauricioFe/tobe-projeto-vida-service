@@ -13,5 +13,7 @@
         public long InstitutionsID { get; set; }
         public long SchoolingID { get; set; }
         public int Active { get; set; }
+        public Institution Institution { get; set; }
+        public Scholling scholling { get; set; }
     }
 }

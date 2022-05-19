@@ -20,12 +20,12 @@ namespace tobeApi.Data.Repositories.Institutions
 
         public Institution Create(Institution model)
         {
-            const string sql = @"INSERT INTO `tobe_db`.`instituicoes`
-		                                (descricao) 
-                                 VALUES (@descricao)";
+            const string sql = @"INSERT INTO `tobe_db`.`institutions`
+		                                (name) 
+                                 VALUES (@name)";
             var paramList = new MySqlParameter[]
             {
-                new MySqlParameter("descricao", model.Description),
+                new MySqlParameter("name", model.Name),
             };
             long lastInsertedId = _contextDb.ExecuteCommand(sql, true, paramList);
             if (lastInsertedId == 0)
@@ -37,7 +37,7 @@ namespace tobeApi.Data.Repositories.Institutions
 
         public Result Delete(long id)
         {
-            const string sql = @"DELETE FROM `tobe_db`.`instituicoes`
+            const string sql = @"DELETE FROM `tobe_db`.`institutions`
                                  WHERE (id = @id);";
             var paramList = new MySqlParameter[]
             {
@@ -55,38 +55,42 @@ namespace tobeApi.Data.Repositories.Institutions
         public Institution Get(long id)
         {
             const string sql = @"SELECT id,
-		                                descricao
-                                        FROM tobe_db.instituicoes 
+		                                name
+                                        FROM tobe_db.institutions 
                                  WHERE id = @id;";
             var paramList = new MySqlParameter[]
             {
                 new MySqlParameter("id", id)
             };
             var row = _contextDb.GetRow(sql, paramList);
-            var instituicoes = Map(row);
-            return instituicoes;
+            if (row == null)
+            {
+                return null;
+            }
+            var institutions = Map(row);
+            return institutions;
         }
 
         public List<Institution> GetAll()
         {
             const string sql = @"SELECT 
 		                                 id,
-		                                descricao
-                                        FROM tobe_db.instituicoes;";
+		                                name
+                                        FROM tobe_db.institutions;";
             var table = _contextDb.GetTable(sql);
-            var instituicoesList = (from DataRow row in table.Rows select Map(row)).ToList();
-            return instituicoesList;
+            var institutionsList = (from DataRow row in table.Rows select Map(row)).ToList();
+            return institutionsList;
         }
 
         public Institution Update(Institution model, long id)
         {
-            const string sql = @"UPDATE `tobe_db`.`instituicoes`
+            const string sql = @"UPDATE `tobe_db`.`institutions`
                                         SET
-		                                descricao = @descricao, 
-                                 WHERE (id = @id);";
+		                                name = @name
+                                 WHERE id = @id;";
             var paramList = new MySqlParameter[]
             {
-                new MySqlParameter("descricao", model.Description),
+                new MySqlParameter("name", model.Name),
                 new MySqlParameter("id", id),
             };
             long affectRows = _contextDb.ExecuteCommand(sql, false, paramList);
@@ -98,12 +102,12 @@ namespace tobeApi.Data.Repositories.Institutions
         }
         private Institution Map(DataRow row)
         {
-            var instituicoes = new Institution
+            var institutions = new Institution
             {
                 Id = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "id"),
-                Description = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "descricao"),
+                Name = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "name"),
             };
-            return instituicoes;
+            return institutions;
         }
     }
 }

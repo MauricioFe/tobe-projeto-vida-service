@@ -2,7 +2,7 @@
 using FluentResults;
 using System;
 using System.Collections.Generic;
-using tobeApi.Data.Dtos.Scholling;
+using tobeApi.Data.Dtos.Schollings;
 using tobeApi.Data.Repositories.Schollings;
 using tobeApi.Models;
 
