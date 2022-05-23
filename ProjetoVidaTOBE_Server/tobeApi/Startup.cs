@@ -10,6 +10,8 @@ using System;
 using System.Text;
 using tobeApi.Data;
 using tobeApi.Data.Repositories.CalendarEvents;
+using tobeApi.Data.Repositories.Courses;
+using tobeApi.Data.Repositories.CoursesEnrolled;
 using tobeApi.Data.Repositories.Institutions;
 using tobeApi.Data.Repositories.Schollings;
 using tobeApi.Data.Repositories.Students;
@@ -64,6 +66,8 @@ namespace tobeApi
             services.AddTransient<ISchollingRepository, SchollingRepository>();
             services.AddTransient<IInstitutionRepository, InstitutionRepository>();
             services.AddTransient<ICalendarEventRepository, CalendarEventRepository>();
+            services.AddTransient<ICourseRepository, CourseRepository>();
+            services.AddTransient<ICourseEnrolledRepository, CourseEnrolledRepository>();
         }
 
         private static void AddServicesScopes(IServiceCollection services)
@@ -74,6 +78,8 @@ namespace tobeApi
             services.AddScoped<SchollingService, SchollingService>();
             services.AddScoped<InstitutionService, InstitutionService>();
             services.AddScoped<CalendarEventService, CalendarEventService>();
+            services.AddScoped<CourseService, CourseService>();
+            services.AddScoped<CourseEnrolledService, CourseEnrolledService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
