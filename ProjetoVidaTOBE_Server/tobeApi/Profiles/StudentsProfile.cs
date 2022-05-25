@@ -4,9 +4,9 @@ using tobeApi.Models;
 
 namespace tobeApi.Profiles
 {
-    public class StudentProfile : Profile
+    public class StudentsProfile : Profile
     {
-        public StudentProfile()
+        public StudentsProfile()
         {
             CreateMap<Student, ReadStudentDto>();
             CreateMap<Student, StudentDto>();

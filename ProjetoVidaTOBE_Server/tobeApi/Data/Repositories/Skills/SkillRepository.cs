@@ -62,7 +62,7 @@ namespace tobeApi.Data.Repositories.Skills
                                         FROM tobe_db.skills s
                                         INNER JOIN tobe_db.profiles p 
                                         ON p.id = s.profiles_id
-                                 WHERE id = @id;";
+                                 WHERE s.id = @id;";
             var paramList = new MySqlParameter[]
             {
                 new MySqlParameter("id", id)
@@ -123,6 +123,7 @@ namespace tobeApi.Data.Repositories.Skills
                 Id = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "s_id"),
                 Description = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "s_description"),
                 ProfilesId = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "profiles_id"),
+                StudentProfile = profile
             };
             return skills;
         }
