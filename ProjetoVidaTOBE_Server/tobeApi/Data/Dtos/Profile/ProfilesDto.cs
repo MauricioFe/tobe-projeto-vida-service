@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace tobeApi.Data.Dtos.StudentProfiles
+namespace tobeApi.Data.Dtos.Profile 
 {
-    public class StudentProfileDto
+    public class ProfilesDto
     {
         [Required]
         [StringLength(45)]

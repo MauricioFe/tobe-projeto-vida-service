@@ -2,7 +2,7 @@
 using tobeApi.Data.Dtos.Institutions;
 using tobeApi.Models;
 
-namespace tobeApi.Profiles
+namespace tobeApi.ProfilesMapper
 {
     public class InstitutionProfile : Profile
     {

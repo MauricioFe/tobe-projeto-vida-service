@@ -12,10 +12,11 @@ using tobeApi.Data;
 using tobeApi.Data.Repositories.CalendarEvents;
 using tobeApi.Data.Repositories.Courses;
 using tobeApi.Data.Repositories.CoursesEnrolled;
+using tobeApi.Data.Repositories.ExerciseTypes;
 using tobeApi.Data.Repositories.Institutions;
+using tobeApi.Data.Repositories.Profile;
 using tobeApi.Data.Repositories.Schollings;
 using tobeApi.Data.Repositories.Skills;
-using tobeApi.Data.Repositories.StudentProfiles;
 using tobeApi.Data.Repositories.Students;
 using tobeApi.Services;
 
@@ -70,8 +71,9 @@ namespace tobeApi
             services.AddTransient<ICalendarEventRepository, CalendarEventRepository>();
             services.AddTransient<ICourseRepository, CourseRepository>();
             services.AddTransient<ICourseEnrolledRepository, CourseEnrolledRepository>();
-            services.AddTransient<IStudentProfileRepository, StudentProfileRepository>();
+            services.AddTransient<IProfileRepository, ProfileRepository>();
             services.AddTransient<ISkillRepository, SkillRepository>();
+            services.AddTransient<IExerciseTypeRepository, ExerciseTypeRepository>();
         }
 
         private static void AddServicesScopes(IServiceCollection services)
@@ -84,8 +86,9 @@ namespace tobeApi
             services.AddScoped<CalendarEventService, CalendarEventService>();
             services.AddScoped<CourseService, CourseService>();
             services.AddScoped<CourseEnrolledService, CourseEnrolledService>();
-            services.AddScoped<StudentProfileService, StudentProfileService>();
+            services.AddScoped<ProfileService, ProfileService>();
             services.AddScoped<SkillService, SkillService>();
+            services.AddScoped<ExerciseTypeService, ExerciseTypeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

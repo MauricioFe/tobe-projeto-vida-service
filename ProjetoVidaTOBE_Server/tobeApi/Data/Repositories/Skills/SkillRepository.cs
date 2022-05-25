@@ -112,7 +112,7 @@ namespace tobeApi.Data.Repositories.Skills
         }
         private Skill Map(DataRow row)
         {
-            var profile = new StudentProfile
+            var profile = new Models.Profiles
             {
                 Id = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "profiles_id"),
                 Description = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "p_description"),

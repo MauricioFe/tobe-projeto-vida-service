@@ -7,20 +7,20 @@ using tobeApi.Utils;
 using MySql.Data.MySqlClient;
 using FluentResults;
 
-namespace tobeApi.Data.Repositories.StudentProfiles
+namespace tobeApi.Data.Repositories.ExerciseTypes
 {
-    public class StudentProfileRepository : IStudentProfileRepository
+    public class ExerciseTypeRepository : IExerciseTypeRepository
     {
         private IDataAccess _contextDb;
 
-        public StudentProfileRepository(IDataAccess contextDb)
+        public ExerciseTypeRepository(IDataAccess contextDb)
         {
             this._contextDb = contextDb;
         }
 
-        public StudentProfile Create(StudentProfile model)
+        public ExerciseType Create(ExerciseType model)
         {
-            const string sql = @"INSERT INTO `tobe_db`.`profiles`
+            const string sql = @"INSERT INTO `tobe_db`.`exercise_type`
 		                                (description) 
                                  VALUES (@description)";
             var paramList = new MySqlParameter[]
@@ -37,7 +37,7 @@ namespace tobeApi.Data.Repositories.StudentProfiles
 
         public Result Delete(long id)
         {
-            const string sql = @"DELETE FROM `tobe_db`.`profiles`
+            const string sql = @"DELETE FROM `tobe_db`.`exercise_type`
                                  WHERE (id = @id);";
             var paramList = new MySqlParameter[]
             {
@@ -52,11 +52,11 @@ namespace tobeApi.Data.Repositories.StudentProfiles
             return Result.Ok();
         }
 
-        public StudentProfile Get(long id)
+        public ExerciseType Get(long id)
         {
             const string sql = @"SELECT id,
 		                                description
-                                        FROM tobe_db.profiles
+                                        FROM tobe_db.exercise_type
                                  WHERE id = @id;";
             var paramList = new MySqlParameter[]
             {
@@ -67,24 +67,24 @@ namespace tobeApi.Data.Repositories.StudentProfiles
             {
                 return null;
             }
-            var profiles = Map(row);
-            return profiles;
+            var exerciseType = Map(row);
+            return exerciseType;
         }
 
-        public List<StudentProfile> GetAll()
+        public List<ExerciseType> GetAll()
         {
             const string sql = @"SELECT 
 		                                 id,
 		                                description
-                                        FROM tobe_db.profiles;";
+                                        FROM tobe_db.exercise_type;";
             var table = _contextDb.GetTable(sql);
-            var profilesList = (from DataRow row in table.Rows select Map(row)).ToList();
-            return profilesList;
+            var exerciseTypeList = (from DataRow row in table.Rows select Map(row)).ToList();
+            return exerciseTypeList;
         }
 
-        public StudentProfile Update(StudentProfile model, long id)
+        public ExerciseType Update(ExerciseType model, long id)
         {
-            const string sql = @"UPDATE `tobe_db`.`profiles`
+            const string sql = @"UPDATE `tobe_db`.`exercise_type`
                                         SET
 		                                description = @description
                                  WHERE id = @id;";
@@ -100,14 +100,14 @@ namespace tobeApi.Data.Repositories.StudentProfiles
             }
             return Get(id);
         }
-        private StudentProfile Map(DataRow row)
+        private ExerciseType Map(DataRow row)
         {
-            var profiles = new StudentProfile
+            var exerciseType = new ExerciseType
             {
                 Id = MapperDataRowToObjectUtil.CreateItemFromRow<long>(row, "id"),
                 Description = MapperDataRowToObjectUtil.CreateItemFromRow<string>(row, "description"),
             };
-            return profiles;
+            return exerciseType;
         }
     }
 }

@@ -2,7 +2,7 @@
 using tobeApi.Data.Dtos.Skills;
 using tobeApi.Models;
 
-namespace tobeApi.Profiles
+namespace tobeApi.ProfilesMapper
 {
     public class SkillsProfile : Profile
     {

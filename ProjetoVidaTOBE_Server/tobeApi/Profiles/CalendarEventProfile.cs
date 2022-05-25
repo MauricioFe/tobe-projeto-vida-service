@@ -2,7 +2,7 @@
 using tobeApi.Data.Dtos.CalendarEvent;
 using tobeApi.Models;
 
-namespace tobeApi.Profiles
+namespace tobeApi.ProfilesMapper
 {
     public class CalendarEventProfile : Profile
     {

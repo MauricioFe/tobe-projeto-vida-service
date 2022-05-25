@@ -7,6 +7,6 @@ namespace tobeApi.Data.Dtos.Skills
     {
         public long Id { get; set; }
         public string Description { get; set; }
-        public StudentProfile StudentProfile { get; set; }
+        public Models.Profiles StudentProfile { get; set; }
     }
 }
